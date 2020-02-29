@@ -1,44 +1,173 @@
-# Full Stack API Final Project
+# Trivia API
 
-## Full Stack Trivia
+Description of project and motivation
+Screenshots (if applicable), with captions
 
-Udacity is invested in creating bonding experiences for its employees and students. A bunch of team members got the idea to hold trivia on a regular basis and created a  webpage to manage the trivia app and play the game, but their API experience is limited and still needs to be built out. 
+All python modules in backends folder follows [PEP8 Style Guidelines](https://www.python.org/dev/peps/pep-0008/) and
+Google [Python Docstring Guidelines](http://google.github.io/styleguide/pyguide.html).
 
-That's where you come in! Help them finish the trivia app so they can start holding trivia and seeing who's the most knowledgeable of the bunch. The application must:
 
-1) Display questions - both all questions and by category. Questions should show the question, category and difficulty rating by default and can show/hide the answer. 
-2) Delete questions.
-3) Add questions and require that they include question and answer text.
-4) Search for questions based on a text query string.
-5) Play the quiz game, randomizing either all questions or within a specific category. 
+## Getting Started
 
-Completing this trivia app will give you the ability to structure plan, implement, and test an API - skills essential for enabling your future applications to communicate with others. 
+### Prerequisites & Installation
 
-## Tasks
+#### Prerequisites
 
-There are `TODO` comments throughout project. Start by reading the READMEs in:
+- Python 3.6 or higher, and pip3
+- Node, Git, and Postgresql
+- Using python virtual environment is highly recommended.
 
-1. [`./frontend/`](./frontend/README.md)
-2. [`./backend/`](./backend/README.md)
+#### Frontend Installation
 
-We recommend following the instructions in those files in order. This order will look familiar from our prior work in the course.
+To start the client, execute the following commands in the frontend folder:
 
-## Starting and Submitting the Project
+```
+npm install // only once to install dependencies
+npm start 
+```
 
-[Fork](https://help.github.com/en/articles/fork-a-repo) the [project repository]() and [Clone](https://help.github.com/en/articles/cloning-a-repository) your forked repository to your machine. Work on the project locally and make sure to push all your changes to the remote repository before submitting the link to your repository in the Classroom. 
+#### Backend Installation
 
-## About the Stack
+Firstly, with Postgres running, restore a database using the trivia.psql file provided. From the backend folder
+in terminal run:
 
-We started the full stack application for you. It is desiged with some key functional areas:
+```
+psql trivia < trivia.psql
+```
 
-### Backend
+Install all required python modules in requirements.txt and set up local environment variables.
+Then start flask project locally.
 
-The `./backend` directory contains a partially completed Flask and SQLAlchemy server. You will work primarily in app.py to define your endpoints and can reference models.py for DB and SQLAlchemy setup. 
+```
+pip install requirements.txt
+export FLASK_APP=flaskr	
+export FLASK_ENV=development
+flask run
+```
 
-### Frontend
+### Tests
 
-The `./frontend` directory contains a complete React frontend to consume the data from the Flask server. You will need to update the endpoints after you define them in the backend. Those areas are marked with TODO and can be searched for expediency. 
+To run tests, create the test database and run the python test script in the backend folder.
 
-Pay special attention to what data the frontend is expecting from each API response to help guide how you format your API. 
+```
+dropdb trivia_test
+createdb trivia_test
+psql trivia_test < trivia.psql
+python test_flaskr.py
+```
 
-[View the README.md within ./frontend for more details.](./frontend/README.md)
+## API Reference.
+
+### Getting Started
+
+- Base URL: At present this app can only be run locally and is not hosted as a base URL. The backend app is hosted at the default, `http://127.0.0.1:5000/`, which is set as a proxy in the frontend configuration. 
+- Authentication: This version of the application does not require authentication or API keys. 
+
+### Endpoints
+
+#### GET /categories
+
+- General:
+- Sample: `curl http://127.0.0.1:5000/categories`
+
+```
+{
+	  "categories": [
+		"Science", 
+		"Art", 
+		"Geography", 
+		"History", 
+		"Entertainment", 
+		"Sports"
+	  ]
+}
+```
+
+#### GET /questions
+
+- General:
+- Sample: `curl http://127.0.0.1:5000/questions`
+
+```
+{
+    "success": False, 
+    "error": 400,
+    "message": "bad request"
+}
+```
+
+#### DELETE /questions
+
+- General:
+- Sample: `curl -X DELETE http://127.0.0.1:5000/questions`
+
+```
+{
+    "success": False, 
+    "error": 400,
+    "message": "bad request"
+}
+```
+
+#### POST /questions/add
+
+- General:
+- Sample: `curl -X POST http://127.0.0.1:5000/questions/add`
+
+```
+{
+    "success": False, 
+    "error": 400,
+    "message": "bad request"
+}
+```
+
+#### POST /questions
+
+- General:
+- Sample: `curl -X POST http://127.0.0.1:5000/questions`
+
+```
+{
+    "success": False, 
+    "error": 400,
+    "message": "bad request"
+}
+```
+
+#### GET /categories/{int:category_id}/questions
+
+- General:
+- Sample: `curl http://127.0.0.1:5000/categories/1/questions`
+
+```
+{
+    "success": False, 
+    "error": 400,
+    "message": "bad request"
+}
+```
+
+### Error Handling
+
+- Errors are returned as JSON objects
+
+```
+{
+    "success": False, 
+    "error": 400,
+    "message": "bad request"
+}
+```
+
+- 400: Bad request
+- 404: Resource is not found
+- 405: Method not allowed
+- 422: Unprocessable
+
+## Authors
+
+- Mason Myoungsung Kim
+- Start Code provided by Udacity Team
+
+## Acknowledgements
