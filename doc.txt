@@ -1,14 +1,6 @@
-https://github.com/almehady/TriviaAPI
-https://github.com/noreenwu/trivia_api
 https://github.com/EmmanuelSage/trivia-api
 https://github.com/lucasauman/triviaAPI
 https://github.com/samuel-js/Trivia-Api
-https://github.com/samuel-js/Trivia-Api
-https://github.com/noreenwu/trivia_api
-
-https://github.com/cmccarthy15/Workshop_Exercise
-https://github.com/cmccarthy15/FSND-Deploy-Flask-App-to-Kubernetes-Using-EKS
-https://github.com/pallets/flask
 
 description of api
 Api reference: getting started

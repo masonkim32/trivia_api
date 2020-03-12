@@ -67,7 +67,7 @@ python test_flaskr.py
 
 #### GET /categories
 
-- General:
+- General: Retrieve a list of all categories.
 - Sample: `curl http://127.0.0.1:5000/categories`
 
 ```
@@ -85,7 +85,7 @@ python test_flaskr.py
 
 #### GET /questions
 
-- General:
+- General: Retrieve a list of questions paginated by 10.
 - Sample: `curl http://127.0.0.1:5000/questions`
 
 ```
@@ -98,21 +98,8 @@ python test_flaskr.py
 
 #### DELETE /questions
 
-- General:
-- Sample: `curl -X DELETE http://127.0.0.1:5000/questions`
-
-```
-{
-    "success": False, 
-    "error": 400,
-    "message": "bad request"
-}
-```
-
-#### POST /questions/add
-
-- General:
-- Sample: `curl -X POST http://127.0.0.1:5000/questions/add`
+- General: Delete a question with provided ID
+- Sample: `curl -X DELETE http://127.0.0.1:5000/questions/5`
 
 ```
 {
@@ -124,8 +111,21 @@ python test_flaskr.py
 
 #### POST /questions
 
-- General:
-- Sample: `curl -X POST http://127.0.0.1:5000/questions`
+- General: Create a new question with provided data.
+- Sample: `curl -X POST http://127.0.0.1:5000/questions -H 'Content-Type: application/json' -d '{"question":"Test question","answer":"Test answer", "category":"1","difficulty":"1"}'`
+
+```
+{
+    "success": False, 
+    "error": 400,
+    "message": "bad request"
+}
+```
+
+#### POST /search_questions
+
+- General: Retrieve questions which include provided searchTerm
+- Sample: `curl -X POST http://127.0.0.1:5000/search_questions -H "Content-Type: application/json" -d '{"searchTerm": "Title"}'`
 
 ```
 {
@@ -137,8 +137,21 @@ python test_flaskr.py
 
 #### GET /categories/{int:category_id}/questions
 
-- General:
+- General: Retrieve all questions belonged to provided category.
 - Sample: `curl http://127.0.0.1:5000/categories/1/questions`
+
+```
+{
+    "success": False, 
+    "error": 400,
+    "message": "bad request"
+}
+```
+
+#### POST /quizzes
+
+- General: Retrieve a random question which is in the provided category and not included in previous questions.
+- Sample: `curl -X POST http://127.0.0.1:5000/quizzes -H "Content-Type: application/json" -d '{"previous_questions": [5, 9], "quiz_category": {"type": "History", "id": "4"}}`
 
 ```
 {
@@ -169,5 +182,3 @@ python test_flaskr.py
 
 - Mason Myoungsung Kim
 - Start Code provided by Udacity Team
-
-## Acknowledgements
