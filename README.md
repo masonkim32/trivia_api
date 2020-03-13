@@ -1,5 +1,7 @@
 # Trivia API
 
+The Trivia API is a Full Stack application that allows users to hold trivia on a regular basis and created a webpage to manage the trivia app and play the game. The API is built in Flask, Javascript, and PostgresSQL.
+
 All python modules in backends folder follows [PEP8 Style Guidelines](https://www.python.org/dev/peps/pep-0008/) and
 Google [Python Docstring Guidelines](http://google.github.io/styleguide/pyguide.html).
 
