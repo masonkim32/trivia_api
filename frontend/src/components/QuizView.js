@@ -22,7 +22,7 @@ class QuizView extends Component {
 
   componentDidMount() {
     $.ajax({
-      url: `/categories`, //TODO: update request URL
+      url: `/categories`,
       type: "GET",
       success: result => {
         this.setState({ categories: result.categories });
@@ -50,7 +50,7 @@ class QuizView extends Component {
     }
 
     $.ajax({
-      url: "/quizzes", //TODO: update request URL
+      url: "/quizzes",
       type: "POST",
       dataType: "json",
       contentType: "application/json",
@@ -181,24 +181,24 @@ class QuizView extends Component {
   renderPlay() {
     return this.state.previousQuestions.length === questionsPerPlay ||
       this.state.forceEnd ? (
-      this.renderFinalScore()
-    ) : this.state.showAnswer ? (
-      this.renderCorrectAnswer()
-    ) : (
-      <div className="quiz-play-holder">
-        <div className="quiz-question">
-          {this.state.currentQuestion.question}
-        </div>
-        <form onSubmit={this.submitGuess}>
-          <input type="text" name="guess" onChange={this.handleChange} />
-          <input
-            className="submit-guess button"
-            type="submit"
-            value="Submit Answer"
-          />
-        </form>
-      </div>
-    );
+        this.renderFinalScore()
+      ) : this.state.showAnswer ? (
+        this.renderCorrectAnswer()
+      ) : (
+          <div className="quiz-play-holder">
+            <div className="quiz-question">
+              {this.state.currentQuestion.question}
+            </div>
+            <form onSubmit={this.submitGuess}>
+              <input type="text" name="guess" onChange={this.handleChange} />
+              <input
+                className="submit-guess button"
+                type="submit"
+                value="Submit Answer"
+              />
+            </form>
+          </div>
+        );
   }
 
   render() {

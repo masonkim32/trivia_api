@@ -29,7 +29,7 @@ def paginate_questions(request, all_questions):
         request (obj): An instance of request_class
         all_questions (list): list of dictionaries which are json
             objects of all questions
-    
+
     Returns:
         list: a paginated question list
     """
@@ -39,7 +39,6 @@ def paginate_questions(request, all_questions):
 
     questions = [question.format() for question in all_questions]
     current_questions = questions[start:end]
-
     return current_questions
 
 
@@ -54,7 +53,7 @@ def create_app(test_config=None):
 
     Args:
         test_config ():
-    
+
     Returns:
         obj: a "Trivia API" Flask app object
     """
@@ -72,10 +71,10 @@ def create_app(test_config=None):
     @app.after_request
     def after_request(response):
         """Setting Access-Control-Allow
-        
+
         Args:
             response (obj): an instance of response_class
-        
+
         Return:
             response object with Access-Control-Allow
         """
@@ -100,9 +99,9 @@ def create_app(test_config=None):
         Handling GET requests for all available categories
 
         return
-            json: a json object with 
+            json: a json object with
                 "categories": a list of all categories in database
-        
+
         Raises:
             404: Resource is not found if there is no such a question.
             422: Unprocessable request.
@@ -128,42 +127,37 @@ def create_app(test_config=None):
 
         Handling GET requests for questions, including pagination
         (every 10 questions).
-        
+
         Return
             a json object with
                 "questions": a list of pagenated questions
                 "total_questions": the number of total questions
                 "current_category": None
                 "categories": a list of all categories' type
-        
+
         Raises:
             404: Resource is not found if there is no such a question.
-            422: Unprocessable request.
         """
-        try:
-            all_questions = Question.query.order_by(Question.id).all()
-            current_questions = paginate_questions(request, all_questions)
+        all_questions = Question.query.order_by(Question.id).all()
+        current_questions = paginate_questions(request, all_questions)
+        if len(current_questions) == 0:
+            abort(404)
 
-            if len(current_questions) == 0:
-                abort(404)
+        categories = set()
+        for question in current_questions:
+            # categories.add(Category.query.get(question['category']).type)
+            categories.add(question['category'])
 
-            categories = set()
-            for question in current_questions:
-                # categories.add(Category.query.get(question['category']).type)
-                categories.add(question['category'])
+        categories = Category.query.order_by(Category.id).all()
+        categories = [category.type for category in categories]
 
-            categories = Category.query.order_by(Category.id).all()
-            categories = [category.type for category in categories]
-
-            return jsonify({
-                'success': True,
-                'questions': current_questions,
-                'categories': categories,
-                'current_category': None,
-                'total_questions': len(all_questions)
-            })
-        except Exception:
-            abort(422)
+        return jsonify({
+            'success': True,
+            'questions': current_questions,
+            'categories': categories,
+            'current_category': None,
+            'total_questions': len(all_questions)
+        })
 
     @app.route('/questions/<int:question_id>', methods=['DELETE'])
     def delete_question(question_id):
@@ -193,15 +187,13 @@ def create_app(test_config=None):
 
             question.delete()
             all_questions = Question.query.order_by(Question.id).all()
-            current_questions = paginate_questions(request, all_questions)
 
-            if len(current_questions) == 0:
+            if len(all_questions) == 0:
                 abort(404)
 
             return jsonify({
                 'success': True,
                 'deleted': question_id,
-                'questions': current_questions,
                 'total_questions': len(all_questions),
             })
 
@@ -218,15 +210,16 @@ def create_app(test_config=None):
         Return:
             A json object with
                 "created": The id of newly created question
-                "questions": A list of paginated questions
+                "current_category": The category that created
+                                    question is included
                 "total_questions": The number of total questions
 
         Raises:
             422: Unprocessable request.
         """
-        body = request.get_json()
-        category_id = body.get('category', None)
         try:
+            body = request.get_json()
+            category_id = body.get('category', None)
             new_question = Question(
                 question=body.get('question', None),
                 answer=body.get('answer', None),
@@ -236,13 +229,11 @@ def create_app(test_config=None):
             new_question.insert()
 
             all_questions = Question.query.order_by(Question.id).all()
-            current_questions = paginate_questions(request, all_questions)
-            category_type = Category.query.filter_by(category_id)
+            category_type = Category.query.get(category_id).type
 
             return jsonify({
                 'success': True,
                 'created': new_question.id,
-                'questions': current_questions,
                 'current_category': category_type,
                 'total_questions': len(all_questions),
             })
@@ -256,14 +247,14 @@ def create_app(test_config=None):
 
         Get questions based on a search term. It should return any
         questions for whom the search term is a substring of the
-        question. 
+        question.
 
         Return:
             A json object with
                 "questions": A list of paginated questions
                 "current_category": None
                 "total_questions": The number of total questions
-        
+
         Raises:
             404: Resource is not found if there is no such a question.
             422: Unprocessable request.
@@ -273,7 +264,8 @@ def create_app(test_config=None):
             search_term = body['searchTerm']
             questions_by_category = Question.query.filter(Question.question.ilike(
                 f'%{search_term}%')).order_by(Question.id).all()
-            current_questions = paginate_questions(request, questions_by_category)
+            current_questions = paginate_questions(
+                request, questions_by_category)
 
             if len(current_questions) == 0:
                 abort(404)
@@ -295,9 +287,9 @@ def create_app(test_config=None):
     @app.route('/categories/<int:category_id>/questions', methods=['GET'])
     def retrieve_questions_by_category(category_id):
         """An endpoint to handle GET requests
-           '/categories/<int:category_id>/questions'
+            '/categories/<int:category_id>/questions'
 
-        Create a GET endpoint to get questions based on category. 
+        Create a GET endpoint to get questions based on category.
 
         Args:
             category_id (int): The id of the category for seaching
@@ -307,9 +299,9 @@ def create_app(test_config=None):
             A json object with
                 "questions": A list of paginated questions included in
                     the designated category
-                "current_category": 
+                "current_category":
                 "total_questions": The number of total questions
-        
+
         Raises:
             404: Resource is not found if there is no such a question.
             422: Unprocessable request.
@@ -317,7 +309,8 @@ def create_app(test_config=None):
         try:
             questions_by_category = Question.query.filter(
                 Question.category == str(category_id)).order_by(Question.id).all()
-            current_questions = paginate_questions(request, questions_by_category)
+            current_questions = paginate_questions(
+                request, questions_by_category)
 
             if len(current_questions) == 0:
                 abort(404)
@@ -337,17 +330,17 @@ def create_app(test_config=None):
     @app.route('/quizzes', methods=['POST'])
     def retrieve_questions_for_quiz():
         """An endpoint to handle POST requests '/quizzes'
-        
+
         Getting questions to play the quiz. This endpoint should take
         category and previous question parameters and return a random
         questions within the given category, if provided, and that is
-        not one of the previous questions. 
+        not one of the previous questions.
 
         Return:
             A json object with
                 "question": A random questions within in the given category
                 "current_category": Currently selected category
-        
+
         Raises:
             404: Resource is not found if there is no such a question.
             422: Unprocessable request.
@@ -380,8 +373,9 @@ def create_app(test_config=None):
             return jsonify({
                 "success": True,
                 "question": question,
-                "current_category": quiz_category
+                "current_category": quiz_category['type']
             })
+
         except Exception:
             abort(422)
 

@@ -1,8 +1,5 @@
 # Trivia API
 
-Description of project and motivation
-Screenshots (if applicable), with captions
-
 All python modules in backends folder follows [PEP8 Style Guidelines](https://www.python.org/dev/peps/pep-0008/) and
 Google [Python Docstring Guidelines](http://google.github.io/styleguide/pyguide.html).
 
@@ -23,7 +20,7 @@ To start the client, execute the following commands in the frontend folder:
 
 ```
 npm install // only once to install dependencies
-npm start 
+npm start
 ```
 
 #### Backend Installation
@@ -40,7 +37,7 @@ Then start flask project locally.
 
 ```
 pip install requirements.txt
-export FLASK_APP=flaskr	
+export FLASK_APP=flaskr
 export FLASK_ENV=development
 flask run
 ```
@@ -60,8 +57,8 @@ python test_flaskr.py
 
 ### Getting Started
 
-- Base URL: At present this app can only be run locally and is not hosted as a base URL. The backend app is hosted at the default, `http://127.0.0.1:5000/`, which is set as a proxy in the frontend configuration. 
-- Authentication: This version of the application does not require authentication or API keys. 
+- Base URL: At present this app can only be run locally and is not hosted as a base URL. The backend app is hosted at the default, `http://127.0.0.1:5000/`, which is set as a proxy in the frontend configuration.
+- Authentication: This version of the application does not require authentication or API keys.
 
 ### Endpoints
 
@@ -72,14 +69,15 @@ python test_flaskr.py
 
 ```
 {
-	  "categories": [
-		"Science", 
-		"Art", 
-		"Geography", 
-		"History", 
-		"Entertainment", 
-		"Sports"
-	  ]
+  "categories": [
+    "Science",
+    "Art",
+    "Geography",
+    "History",
+    "Entertainment",
+    "Sports"
+  ],
+  "success": true
 }
 ```
 
@@ -90,22 +88,102 @@ python test_flaskr.py
 
 ```
 {
-    "success": False, 
-    "error": 400,
-    "message": "bad request"
+  "categories": [
+    "Science",
+    "Art",
+    "Geography",
+    "History",
+    "Entertainment",
+    "Sports"
+  ],
+  "current_category": null,
+  "questions": [
+    {
+      "answer": "Apollo 13",
+      "category": 5,
+      "difficulty": 4,
+      "id": 2,
+      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
+    },
+    {
+      "answer": "Tom Cruise",
+      "category": 5,
+      "difficulty": 4,
+      "id": 4,
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+    },
+    {
+      "answer": "Maya Angelou",
+      "category": 4,
+      "difficulty": 2,
+      "id": 5,
+      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+    },
+    {
+      "answer": "Edward Scissorhands",
+      "category": 5,
+      "difficulty": 3,
+      "id": 6,
+      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
+    },
+    {
+      "answer": "Muhammad Ali",
+      "category": 4,
+      "difficulty": 1,
+      "id": 9,
+      "question": "What boxer's original name is Cassius Clay?"
+    },
+    {
+      "answer": "Brazil",
+      "category": 6,
+      "difficulty": 3,
+      "id": 10,
+      "question": "Which is the only team to play in every soccer World Cup tournament?"
+    },
+    {
+      "answer": "Uruguay",
+      "category": 6,
+      "difficulty": 4,
+      "id": 11,
+      "question": "Which country won the first ever soccer World Cup in 1930?"
+    },
+    {
+      "answer": "George Washington Carver",
+      "category": 4,
+      "difficulty": 2,
+      "id": 12,
+      "question": "Who invented Peanut Butter?"
+    },
+    {
+      "answer": "Lake Victoria",
+      "category": 3,
+      "difficulty": 2,
+      "id": 13,
+      "question": "What is the largest lake in Africa?"
+    },
+    {
+      "answer": "The Palace of Versailles",
+      "category": 3,
+      "difficulty": 3,
+      "id": 14,
+      "question": "In which royal palace would you find the Hall of Mirrors?"
+    }
+  ],
+  "success": true,
+  "total_questions": 19
 }
 ```
 
 #### DELETE /questions
 
 - General: Delete a question with provided ID
-- Sample: `curl -X DELETE http://127.0.0.1:5000/questions/5`
+- Sample: `curl -X DELETE http://127.0.0.1:5000/questions/9`
 
 ```
 {
-    "success": False, 
-    "error": 400,
-    "message": "bad request"
+  "deleted": 6,
+  "success": true,
+  "total_questions": 22
 }
 ```
 
@@ -116,22 +194,39 @@ python test_flaskr.py
 
 ```
 {
-    "success": False, 
-    "error": 400,
-    "message": "bad request"
+  "created": 29,
+  "current_category": "Science",
+  "success": true,
+  "total_questions": 25
 }
 ```
 
 #### POST /search_questions
 
 - General: Retrieve questions which include provided searchTerm
-- Sample: `curl -X POST http://127.0.0.1:5000/search_questions -H "Content-Type: application/json" -d '{"searchTerm": "Title"}'`
+- Sample: `curl -X POST http://127.0.0.1:5000/search_questions -H "Content-Type: application/json" -d '{"searchTerm": "What is"}'`
 
 ```
 {
-    "success": False, 
-    "error": 400,
-    "message": "bad request"
+  "current_category": null,
+  "questions": [
+    {
+      "answer": "Lake Victoria",
+      "category": 3,
+      "difficulty": 2,
+      "id": 13,
+      "question": "What is the largest lake in Africa?"
+    },
+    {
+      "answer": "The Liver",
+      "category": 1,
+      "difficulty": 4,
+      "id": 20,
+      "question": "What is the heaviest organ in the human body?"
+    }
+  ],
+  "success": true,
+  "total_questions": 25
 }
 ```
 
@@ -142,22 +237,51 @@ python test_flaskr.py
 
 ```
 {
-    "success": False, 
-    "error": 400,
-    "message": "bad request"
+  "current_category": "Science",
+  "questions": [
+    {
+      "answer": "The Liver",
+      "category": 1,
+      "difficulty": 4,
+      "id": 20,
+      "question": "What is the heaviest organ in the human body?"
+    },
+    {
+      "answer": "Alexander Fleming",
+      "category": 1,
+      "difficulty": 3,
+      "id": 21,
+      "question": "Who discovered penicillin?"
+    },
+    {
+      "answer": "Blood",
+      "category": 1,
+      "difficulty": 4,
+      "id": 22,
+      "question": "Hematology is a branch of medicine involving the study of what?"
+    },
+  ],
+  "success": true,
+  "total_questions": 25
 }
 ```
 
 #### POST /quizzes
 
 - General: Retrieve a random question which is in the provided category and not included in previous questions.
-- Sample: `curl -X POST http://127.0.0.1:5000/quizzes -H "Content-Type: application/json" -d '{"previous_questions": [5, 9], "quiz_category": {"type": "History", "id": "4"}}`
+- Sample: `curl -X POST http://127.0.0.1:5000/quizzes -H "Content-Type: application/json" -d '{"previous_questions": ["2", "4"], "quiz_category": {"type": "Entertainment", "id": "5"}}'`
 
 ```
 {
-    "success": False, 
-    "error": 400,
-    "message": "bad request"
+  "current_category": "Entertainment",
+  "question": {
+    "answer": "Edward Scissorhands",
+    "category": 5,
+    "difficulty": 3,
+    "id": 6,
+    "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
+  },
+  "success": true
 }
 ```
 
@@ -167,7 +291,7 @@ python test_flaskr.py
 
 ```
 {
-    "success": False, 
+    "success": False,
     "error": 400,
     "message": "bad request"
 }

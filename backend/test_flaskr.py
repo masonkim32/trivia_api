@@ -61,7 +61,6 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['error'], 404)
         self.assertEqual(data['message'], 'Resource is not found.')
 
-    @unittest.skip("test delete for just one time")
     def test_delete_question(self):
         total_num_of_questions_before_delete = len(Question.query.all())
         response = self.client().delete('/questions/5')
@@ -70,7 +69,6 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertEqual(data['deleted'], 5)
-        self.assertTrue(data['questions'])
         num_of_deleted_question = \
             total_num_of_questions_before_delete - data['total_questions']
         self.assertEqual(num_of_deleted_question, 1)
@@ -98,7 +96,6 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(data['created'])
-        self.assertTrue(data['questions'])
         num_of_added_question = \
             data['total_questions'] - total_num_of_questions_before_add
         self.assertEqual(num_of_added_question, 1)
@@ -113,7 +110,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(data['questions'])
-        self.assertTrue(data['current_category'])
+        self.assertEqual(data['current_category'], None)
         self.assertTrue(data['total_questions'])
 
     def test_405_sent_searching_question_with_get_method(self):
@@ -143,7 +140,7 @@ class TriviaTestCase(unittest.TestCase):
             'quizzes',
             data=json.dumps({
                 "previous_questions": ['13'],
-                "quiz_category": "3"
+                "quiz_category": {"type": "Geography", "id": "3"},
             }),
             content_type='application/json'
         )
